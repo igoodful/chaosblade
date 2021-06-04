@@ -24,16 +24,16 @@ import (
 	"github.com/chaosblade-io/chaosblade-spec-go/spec"
 	"github.com/chaosblade-io/chaosblade-spec-go/util"
 	specutil "github.com/chaosblade-io/chaosblade-spec-go/util"
-	"github.com/sirupsen/logrus"
-	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
-
 	"github.com/chaosblade-io/chaosblade/exec/cplus"
 	"github.com/chaosblade-io/chaosblade/exec/docker"
 	"github.com/chaosblade-io/chaosblade/exec/jvm"
 	"github.com/chaosblade-io/chaosblade/exec/kubernetes"
+	"github.com/chaosblade-io/chaosblade/exec/miproxy"
 	"github.com/chaosblade-io/chaosblade/exec/os"
 	"github.com/chaosblade-io/chaosblade/version"
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 )
 
 // ExpActionFlags is used to receive experiment action flags
@@ -121,6 +121,23 @@ func (ec *baseExpCommandService) registerSubCommands() {
 	ec.registerDockerExpCommands()
 	// register k8s command
 	ec.registerK8sExpCommands()
+	ec.registerMiproxyExpCommands()
+}
+
+// registerOsExpCommands
+func (ec *baseExpCommandService) registerMiproxyExpCommands() []*modelCommand {
+	file := path.Join(util.GetYamlHome(), fmt.Sprintf("chaosblade-os-spec-%s.yaml", version.Ver))
+	models, err := specutil.ParseSpecsToModel(file, miproxy.NewExecutor())
+	if err != nil {
+		return nil
+	}
+	osCommands := make([]*modelCommand, 0)
+	for idx := range models.Models {
+		model := &models.Models[idx]
+		command := ec.registerExpCommand(model, "")
+		osCommands = append(osCommands, command)
+	}
+	return osCommands
 }
 
 // registerOsExpCommands
