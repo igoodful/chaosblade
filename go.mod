@@ -7,6 +7,7 @@ require (
 	github.com/chaosblade-io/chaosblade-exec-os v1.0.0
 	github.com/chaosblade-io/chaosblade-operator v0.10.1-0.20210319081110-93e0b6930993
 	github.com/chaosblade-io/chaosblade-spec-go v1.0.0
+	github.com/go-ole/go-ole v1.2.5 // indirect
 	github.com/mattn/go-sqlite3 v1.10.1-0.20190217174029-ad30583d8387
 	github.com/prometheus/common v0.9.1
 	github.com/shirou/gopsutil v2.20.5+incompatible
